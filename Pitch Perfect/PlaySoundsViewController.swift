@@ -10,13 +10,16 @@ import UIKit
 import AVFoundation
 
 class PlaySoundsViewController: UIViewController {
-    var slowAudio = AVAudioPlayer()
+    var audioPlayer = AVAudioPlayer()
     var recordedAudio: RecordedAudio!
     var audioEngine: AVAudioEngine!
     var audioFile: AVAudioFile!
     
     var restartAudioVal: NSTimeInterval = 0
     
+    /**
+    Helper function to setup audio file given the name of the file and file extension
+    */
     func setupAudioPlayerWithFile(file: NSString, type: NSString) -> AVAudioPlayer {
         var audioPath = NSBundle.mainBundle().pathForResource(file as String, ofType: type as String)
         var audioUrl = NSURL.fileURLWithPath(audioPath!)
@@ -29,6 +32,9 @@ class PlaySoundsViewController: UIViewController {
         return audioPlayer!
     }
     
+    /**
+    Helper function to setup audio file given the NSURL object
+    */
     func setupAudioPlayerWithNSURL(recordedAudioUrl: NSURL) -> AVAudioPlayer {
         var audioError: NSError?
         
@@ -42,42 +48,59 @@ class PlaySoundsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        slowAudio = self.setupAudioPlayerWithNSURL(recordedAudio.filePathUrl)
+        audioPlayer = self.setupAudioPlayerWithNSURL(recordedAudio.filePathUrl)
         audioEngine = AVAudioEngine()
         audioFile = AVAudioFile(forReading: recordedAudio.filePathUrl, error: nil)
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
-    
+    /**
+    UIKit Button Action to play slow sound
+    */
     @IBAction func slowSoundAction(sender: UIButton) {
         stopAllAudio()
-        slowAudio.currentTime = restartAudioVal
-        slowAudio.rate = 0.5
-        slowAudio.play()
+        audioPlayer.currentTime = restartAudioVal
+        audioPlayer.rate = 0.5
+        audioPlayer.play()
     }
     
+    /**
+    UIKit Button Action to play fast sound
+    */
     @IBAction func fastSoundAction(sender: UIButton) {
         stopAllAudio()
-        slowAudio.currentTime = restartAudioVal
-        slowAudio.rate = 1.5
-        slowAudio.play()
+        audioPlayer.currentTime = restartAudioVal
+        audioPlayer.rate = 1.5
+        audioPlayer.play()
     }
     
+    /**
+    UIKit Button Action to play chipmunk sound
+    */
     @IBAction func chipmunkSoundAction(sender: UIButton) {
         playAudioWithVariablePitch(1000)
     }
     
+    /**
+    UIKit Button Action to play darth vader sound
+    */
     @IBAction func darthVaderSoundAction(sender: UIButton) {
         playAudioWithVariablePitch(-1000)
     }
     
+    /**
+    UIKit Button Action to stop all sounds
+    */
     @IBAction func stopAudio(sender: UIButton) {
         stopAllAudio()
     }
     
+    /**
+    Helper function to play type of sound given particular pitch
+    */
     func playAudioWithVariablePitch(pitch: Float) {
         stopAllAudio()
         
@@ -97,19 +120,22 @@ class PlaySoundsViewController: UIViewController {
         audioPlayerNode.play()
     }
     
+    /**
+    Helper function to stop all sound
+    */
     func stopAllAudio() {
-        slowAudio.stop()
+        audioPlayer.stop()
         audioEngine.stop()
         audioEngine.reset()
     }
     /*
     // MARK: - Navigation
-
+    
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    // Get the new view controller using segue.destinationViewController.
+    // Pass the selected object to the new view controller.
     }
     */
-
+    
 }

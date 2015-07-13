@@ -34,7 +34,9 @@ class ViewController: UIViewController, AVAudioRecorderDelegate {
         super.didReceiveMemoryWarning()
     }
 
-
+    /**
+    UIKit Button Action to record audio
+    */
     @IBAction func recordAudio(sender: UIButton) {
         recordingInProgress.text = recordingInProgressText
         recordButton.hidden = true
@@ -57,6 +59,9 @@ class ViewController: UIViewController, AVAudioRecorderDelegate {
         audioRecorder.record()
     }
     
+    /**
+    UIKit Button Action to stop recording audio
+    */
     @IBAction func stopAudio(sender: UIButton) {
         recordingInProgress.text = tapToRecordText
         
@@ -68,6 +73,9 @@ class ViewController: UIViewController, AVAudioRecorderDelegate {
         stopButton.hidden = true
     }
     
+    /**
+    Delegate function called when audio recording is complete
+    */
     func audioRecorderDidFinishRecording(recorder: AVAudioRecorder!, successfully flag: Bool) {
         if (flag) {
             recordedAudio = RecordedAudio()
